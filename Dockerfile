@@ -1,12 +1,18 @@
-FROM prom/prometheus:latest
+FROM quay.io/prometheus/prometheus:latest
 
-# Add Prometheus config file
+# Set working directory
+WORKDIR /etc/prometheus
+
+# Copy config file
 COPY prometheus.yml /etc/prometheus/prometheus.yml
 
-# Expose Prometheus web UI port
+# Expose Prometheus port
 EXPOSE 9090
 
-# Start Prometheus
-CMD ["/bin/prometheus", "--config.file=/etc/prometheus/prometheus.yml"]
+# Correct entrypoint
+ENTRYPOINT ["/bin/prometheus"]
+
+# Correct command and arguments
+CMD ["--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus"]
 
 
